@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>VEXLABS — Premium Digital Account & TopUp Marketplace</title>
+  <meta name="description" content="VEXLABS - Ultimate Premium Account Marketplace with Instant Delivery and Full Warranty." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cyber: {
+              cyan: '#00f2fe',
+              blue: '#4facfe',
+              purple: '#9d4edd',
+              dark: '#0b0f19',
+              slate: '#0f172a',
+              card: 'rgba(15, 23, 42, 0.65)',
+              border: 'rgba(0, 242, 254, 0.2)'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            orbitron: ['Orbitron', 'sans-serif']
+          },
+          boxShadow: {
+            neon: '0 0 20px rgba(0, 242, 254, 0.35)',
+            'neon-purple': '0 0 20px rgba(157, 78, 221, 0.35)',
+            glow: '0 0 30px rgba(0, 242, 254, 0.5)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Icons (FontAwesome 6 CDN) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0f19;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00f2fe;
+    }
+
+    /* Glassmorphism Classes */
+    .glass-card {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-nav {
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 242, 254, 0.15);
+    }
+
+    .glass-modal {
+      background: rgba(11, 15, 25, 0.92);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+    }
+
+    /* Gradient Glowing Text */
+    .glow-text {
+      background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #9d4edd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Card Glow Hover */
+    .product-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(0, 242, 254, 0.5);
+      box-shadow: 0 10px 30px -10px rgba(0, 242, 254, 0.3);
+    }
+
+    /* Hide horizontal scrollbars for clean UI */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Animations */
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+    .pulse-glow {
+      animation: pulseGlow 4s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-cyber-dark text-slate-100 font-sans antialiased selection:bg-cyber-cyan selection:text-cyber-dark min-h-screen relative overflow-x-hidden">
+
+  <!-- ================= BACKGROUND LAYERS ================= -->
+  <!-- 3D Three.js WebGL Particle Layer (Default) -->
+  <div id="threejs-container" class="fixed inset-0 z-[-1] pointer-events-none transition-opacity duration-700 opacity-100"></div>
+
+  <!-- Live Video Background Layer (Toggleable Option B) -->
+  <div id="video-container" class="fixed inset-0 z-[-2] pointer-events-none transition-opacity duration-700 opacity-0 overflow-hidden">
+    <video id="bg-video" loop muted playsinline class="w-full h-full object-cover">
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-mesh-network-32777-large.mp4" type="video/mp4">
+    </video>
+    <!-- Opacity Overlay Mask -->
+    <div class="absolute inset-0 bg-cyber-dark/80 backdrop-blur-[2px]"></div>
+  </div>
+
+  <!-- Floating Ambient Gradient Orbs -->
+  <div class="fixed top-1/4 left-[-10%] w-[350px] h-[350px] bg-cyber-cyan/15 rounded-full blur-[120px] pointer-events-none pulse-glow z-[-1]"></div>
+  <div class="fixed bottom-10 right-[-10%] w-[400px] h-[400px] bg-cyber-purple/20 rounded-full blur-[140px] pointer-events-none pulse-glow z-[-1]" style="animation-delay: 2s;"></div>
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-40 glass-nav transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
+        
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+          <a href="#" class="flex items-center gap-2 group">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyber-cyan to-cyber-purple p-[1px] shadow-neon">
+              <div class="w-full h-full bg-cyber-dark rounded-[11px] flex items-center justify-center">
+                <i class="fa-solid fa-bolt text-cyber-cyan text-lg group-hover:scale-110 transition-transform"></i>
+              </div>
+            </div>
+            <span class="font-orbitron font-extrabold text-2xl tracking-wider glow-text">VEXLABS</span>
+          </a>
+        </div>
+
+        <!-- Search Bar (Desktop) -->
+        <div class="hidden md:flex flex-1 max-w-md relative">
+          <input type="text" id="searchInput" placeholder="Search accounts, AI tools, games..." 
+                 class="w-full bg-slate-900/80 border border-slate-700/60 focus:border-cyber-cyan text-sm rounded-xl py-2.5 pl-10 pr-4 text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-cyber-cyan transition-all" />
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+          <button id="clearSearch" class="hidden absolute right-3 top-3 text-slate-400 hover:text-slate-200 text-xs bg-slate-800 rounded-full w-4 h-4 items-center justify-center">✕</button>
+        </div>
+
+        <!-- Header Actions -->
+        <div class="flex items-center gap-2 sm:gap-4">
+          
+          <!-- Background Mode Switcher Floating Toggle -->
+          <button id="bgToggleBtn" title="Toggle 3D / Video Background" 
+                  class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-xs font-medium text-cyber-cyan transition-all hover:shadow-neon">
+            <i class="fa-solid fa-cubes text-sm" id="bgToggleIcon"></i>
+            <span class="hidden sm:inline" id="bgToggleText">3D Canvas</span>
+          </button>
+
+          <!-- Cart Modal Trigger Button -->
+          <button id="cartBtn" class="relative p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-slate-200 transition-all hover:text-cyber-cyan">
+            <i class="fa-solid fa-shopping-bag text-lg"></i>
+            <span id="cartBadge" class="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-cyber-cyan to-cyber-purple text-cyber-dark font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-neon">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Search Input (Visible only on Mobile screens) -->
+      <div class="pb-3 md:hidden">
+        <div class="relative w-full">
+          <input type="text" id="mobileSearchInput" placeholder="Search products..." 
+                 class="w-full bg-slate-900/80 border border-slate-700/60 focus:border-cyber-cyan text-xs rounded-xl py-2 pl-9 pr-4 text-slate-200 placeholder-slate-400 focus:outline-none" />
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
+
+    <!-- ================= HERO BANNER & SLIDER ================= -->
+    <section class="relative rounded-3xl overflow-hidden border border-cyber-border/40 glass-card p-6 sm:p-10 shadow-2xl">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <!-- Hero Text Content -->
+        <div class="lg:col-span-7 space-y-5 text-center lg:text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyber-cyan/10 border border-cyber-cyan/30 text-cyber-cyan text-xs font-semibold tracking-wide">
+            <span class="w-2 h-2 rounded-full bg-cyber-cyan animate-ping"></span>
+            NEXT-GEN DIGITAL MARKETPLACE
+          </div>
+          
+          <h1 class="text-3xl sm:text-5xl font-orbitron font-extrabold leading-tight tracking-tight">
+            Elevate Your Experience With <span class="glow-text">VEXLABS Premium</span>
+          </h1>
+
+          <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto lg:mx-0 font-light">
+            Instant automatic delivery for Streaming Services, AI Subscriptions, Game Top-Ups, and Software Licenses. 100% Guaranteed & Safe.
+          </p>
+
+          <!-- Badges -->
+          <div class="flex flex-wrap justify-center lg:justify-start gap-4 pt-2 text-xs sm:text-sm font-medium text-slate-300">
+            <div class="flex items-center gap-2 bg-slate-900/60 px-3 py-2 rounded-xl border border-slate-800">
+              <i class="fa-solid fa-bolt text-cyber-cyan"></i> 24/7 Instant Delivery
+            </div>
+            <div class="flex items-center gap-2 bg-slate-900/60 px-3 py-2 rounded-xl border border-slate-800">
+              <i class="fa-solid fa-shield-halved text-cyber-purple"></i> Full Warranty
+            </div>
+            <div class="flex items-center gap-2 bg-slate-900/60 px-3 py-2 rounded-xl border border-slate-800">
+              <i class="fa-solid fa-check-circle text-emerald-400"></i> 100% Legal & Safe
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Promo Carousel / Card Slider -->
+        <div class="lg:col-span-5 relative">
+          <div class="relative w-full overflow-hidden rounded-2xl bg-gradient-to-b from-slate-900/90 to-cyber-dark/90 border border-slate-700/50 p-5 shadow-neon-purple">
+            <div id="promoSlider" class="transition-all duration-500">
+              <!-- Dynamic Promo Items via JS -->
+            </div>
+            <!-- Slider Controls -->
+            <div class="flex justify-between items-center mt-4 pt-3 border-t border-slate-800 text-xs">
+              <span id="sliderDots" class="flex gap-1.5"></span>
+              <div class="flex gap-2">
+                <button id="prevSlide" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300">‹</button>
+                <button id="nextSlide" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300">›</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CATEGORY FILTERS ================= -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-orbitron font-bold text-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-fire text-cyber-cyan"></i> Browse Catalog
+        </h2>
+        <span id="productCountBadge" class="text-xs text-slate-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700">Showing 6 Products</span>
+      </div>
+
+      <!-- Scrollable Category Pills -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar" id="categoryContainer">
+        <!-- Buttons added by JS -->
+      </div>
+    </section>
+
+    <!-- ================= PRODUCT GRID ================= -->
+    <section>
+      <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Products populated dynamically -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="emptyState" class="hidden text-center py-16 space-y-3 glass-card rounded-2xl">
+        <i class="fa-solid fa-box-open text-4xl text-slate-500"></i>
+        <h3 class="text-lg font-semibold text-slate-300">No Products Found</h3>
+        <p class="text-xs text-slate-500">Try adjusting your search query or category filter.</p>
+      </div>
+    </section>
+
+    <!-- ================= TRUST & HOW TO ORDER MODULES ================= -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-6">
+      
+      <!-- How To Order (Accordion / Steps) -->
+      <div class="lg:col-span-6 glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
+        <h3 class="text-lg font-orbitron font-bold text-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-sliders text-cyber-cyan"></i> How To Purchase
+        </h3>
+        <div class="space-y-3 text-sm">
+          <div class="flex gap-3 items-start bg-slate-900/60 p-3 rounded-xl border border-slate-800/80">
+            <span class="w-6 h-6 rounded-full bg-cyber-cyan/20 text-cyber-cyan font-bold text-xs flex items-center justify-center shrink-0">1</span>
+            <div>
+              <h4 class="font-semibold text-slate-200">Select Product & Variant</h4>
+              <p class="text-xs text-slate-400">Choose your desired account duration, diamonds quantity, or package type.</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start bg-slate-900/60 p-3 rounded-xl border border-slate-800/80">
+            <span class="w-6 h-6 rounded-full bg-cyber-purple/20 text-cyber-purple font-bold text-xs flex items-center justify-center shrink-0">2</span>
+            <div>
+              <h4 class="font-semibold text-slate-200">Fill In Details & Payment</h4>
+              <p class="text-xs text-slate-400">Provide your WhatsApp/Email or Game ID and pick instant payment (QRIS/E-Wallet/Bank).</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start bg-slate-900/60 p-3 rounded-xl border border-slate-800/80">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xs flex items-center justify-center shrink-0">3</span>
+            <div>
+              <h4 class="font-semibold text-slate-200">Instant Automated Delivery</h4>
+              <p class="text-xs text-slate-400">Credentials or top-up are processed automatically to your WhatsApp or Email!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ Section Accordion -->
+      <div class="lg:col-span-6 glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
+        <h3 class="text-lg font-orbitron font-bold text-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-cyber-purple"></i> Frequently Asked Questions
+        </h3>
+        <div class="space-y-2" id="faqAccordion">
+          <!-- FAQ Item 1 -->
+          <div class="border border-slate-800 rounded-xl overflow-hidden bg-slate-900/40">
+            <button class="w-full p-3.5 text-left text-xs sm:text-sm font-semibold text-slate-200 flex justify-between items-center faq-toggle">
+              <span>Is there a replacement warranty for accounts?</span>
+              <i class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
+            </button>
+            <div class="hidden p-3.5 pt-0 text-xs text-slate-400 border-t border-slate-800/50">
+              Yes, all products purchased at VEXLABS include a 100% full replacement warranty during your active subscription period if any issues arise.
+            </div>
+          </div>
+          <!-- FAQ Item 2 -->
+          <div class="border border-slate-800 rounded-xl overflow-hidden bg-slate-900/40">
+            <button class="w-full p-3.5 text-left text-xs sm:text-sm font-semibold text-slate-200 flex justify-between items-center faq-toggle">
+              <span>How long does processing take after payment?</span>
+              <i class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
+            </button>
+            <div class="hidden p-3.5 pt-0 text-xs text-slate-400 border-t border-slate-800/50">
+              Orders are processed instantly (1-3 minutes) via automated system. Game top-ups are direct to your in-game UID.
+            </div>
+          </div>
+          <!-- FAQ Item 3 -->
+          <div class="border border-slate-800 rounded-xl overflow-hidden bg-slate-900/40">
+            <button class="w-full p-3.5 text-left text-xs sm:text-sm font-semibold text-slate-200 flex justify-between items-center faq-toggle">
+              <span>What payment methods are supported?</span>
+              <i class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
+            </button>
+            <div class="hidden p-3.5 pt-0 text-xs text-slate-400 border-t border-slate-800/50">
+              We support QRIS Instant All Payment (GoPay, OVO, Dana, ShopeePay), Bank Transfers, and Crypto (USDT).
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="glass-card p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6">
+      <div class="text-center max-w-xl mx-auto space-y-2">
+        <h3 class="text-xl font-orbitron font-bold text-slate-100">Customer Reviews</h3>
+        <p class="text-xs text-slate-400">Trusted by over 15,000+ digital gamers and creators across the globe.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex items-center gap-1 text-amber-400 text-xs">
+            ★★★★★
+          </div>
+          <p class="text-xs text-slate-300">"ChatGPT Plus activated within 2 minutes! Legit service, zero hassle."</p>
+          <span class="text-[11px] text-cyber-cyan block font-semibold">— Alex R., Creator</span>
+        </div>
+
+        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex items-center gap-1 text-amber-400 text-xs">
+            ★★★★★
+          </div>
+          <p class="text-xs text-slate-300">"Super cheap MLBB diamonds compared to direct store. Topup entered fast."</p>
+          <span class="text-[11px] text-cyber-purple block font-semibold">— Kevin S., Gamer</span>
+        </div>
+
+        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="flex items-center gap-1 text-amber-400 text-xs">
+            ★★★★★
+          </div>
+          <p class="text-xs text-slate-300">"Netflix 4K Private Profile works flawlessly. Warranty service is fast when asked."</p>
+          <span class="text-[11px] text-emerald-400 block font-semibold">— Sarah M., Designer</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="mt-16 bg-cyber-dark/90 border-t border-slate-800 text-slate-400 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
+      
+      <div class="space-y-3">
+        <span class="font-orbitron font-extrabold text-xl glow-text">VEXLABS</span>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          The ultimate destination for premium account subscriptions, automated game top-ups, and digital vouchers.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-slate-200 mb-3">Quick Navigation</h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:text-cyber-cyan transition-colors">Catalog Products</a></li>
+          <li><a href="#" class="hover:text-cyber-cyan transition-colors">How To Order</a></li>
+          <li><a href="#" class="hover:text-cyber-cyan transition-colors">Track Order</a></li>
+          <li><a href="#" class="hover:text-cyber-cyan transition-colors">Terms of Service</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-slate-200 mb-3">Popular Categories</h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:text-cyber-purple transition-colors">AI Productivity Tools</a></li>
+          <li><a href="#" class="hover:text-cyber-purple transition-colors">4K Streaming Accounts</a></li>
+          <li><a href="#" class="hover:text-cyber-purple transition-colors">Game Credits Top-up</a></li>
+          <li><a href="#" class="hover:text-cyber-purple transition-colors">Design & Cloud Suites</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-slate-200 mb-3">Connect With Us</h4>
+        <div class="flex gap-3 text-base mb-3">
+          <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-cyber-cyan hover:text-cyber-dark flex items-center justify-center transition-all"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-cyber-cyan hover:text-cyber-dark flex items-center justify-center transition-all"><i class="fa-brands fa-telegram"></i></a>
+          <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-cyber-cyan hover:text-cyber-dark flex items-center justify-center transition-all"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-cyber-cyan hover:text-cyber-dark flex items-center justify-center transition-all"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+        <p class="text-[11px] text-slate-500">Support Hours: 08:00 - 24:00 (GMT+7)</p>
+      </div>
+    </div>
+
+    <div class="border-t border-slate-900 py-4 text-center text-slate-500">
+      <p>&copy; 2026 VEXLABS Marketplace. All rights reserved. Crafted for High Performance.</p>
+    </div>
+  </footer>
+
+  <!-- ================= FLOATING ACTION BUTTONS ================= -->
+  <!-- Direct WhatsApp Support Float -->
+  <a href="https://wa.me/6289630810455?text=Hello%20VEXLABS%20Support,%20I%20need%20assistance." target="_blank" 
+     class="fixed bottom-6 right-6 z-30 bg-emerald-500 hover:bg-emerald-400 text-cyber-dark font-bold p-3.5 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center">
+    <i class="fa-brands fa-whatsapp text-2xl"></i>
+  </a>
+
+  <!-- Live Purchase Notification Toast (Simulated Buyer Activity) -->
+  <div id="liveToast" class="fixed bottom-6 left-6 z-30 max-w-xs glass-card border border-cyber-cyan/40 p-3 rounded-xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-500 pointer-events-none">
+    <div class="w-8 h-8 rounded-full bg-cyber-cyan/20 text-cyber-cyan flex items-center justify-center shrink-0">
+      <i class="fa-solid fa-bag-shopping text-xs"></i>
+    </div>
+    <div class="text-[11px]">
+      <p class="font-semibold text-slate-200" id="toastUser">User 0812*** bought Netflix 1M</p>
+      <span class="text-slate-400 text-[10px]" id="toastTime">Just now • Verified Purchase</span>
+    </div>
+  </div>
+
+  <!-- ================= CHECKOUT MODAL ================= -->
+  <div id="checkoutModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-cyber-dark/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+    <div class="glass-modal max-w-md w-full rounded-3xl p-6 relative border border-cyber-cyan/30 shadow-2xl max-h-[90vh] overflow-y-auto no-scrollbar">
+      
+      <!-- Close Button -->
+      <button id="closeModal" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg">✕</button>
+
+      <!-- Header -->
+      <div class="flex items-center gap-3 mb-5">
+        <div id="modalProductIcon" class="w-12 h-12 rounded-xl bg-slate-800 p-2 flex items-center justify-center border border-slate-700">
+          <!-- SVG or Icon -->
+        </div>
+        <div>
+          <h3 id="modalProductTitle" class="font-orbitron font-bold text-base text-slate-100">Product Title</h3>
+          <span id="modalProductCategory" class="text-xs text-cyber-cyan bg-cyber-cyan/10 px-2 py-0.5 rounded-md">Category</span>
+        </div>
+      </div>
+
+      <!-- Form Inputs -->
+      <form id="checkoutForm" class="space-y-4 text-xs sm:text-sm">
+        
+        <!-- Account / Target ID Input -->
+        <div>
+          <label class="block font-medium text-slate-300 mb-1" id="targetIdLabel">WhatsApp / Contact Email</label>
+          <input type="text" id="targetIdInput" required placeholder="e.g., 08123456789 or email@domain.com" 
+                 class="w-full bg-slate-900 border border-slate-700 focus:border-cyber-cyan rounded-xl p-2.5 text-slate-200 focus:outline-none" />
+        </div>
+
+        <!-- Variant Selector -->
+        <div>
+          <label class="block font-medium text-slate-300 mb-1">Select Package / Duration</label>
+          <div id="variantContainer" class="grid grid-cols-2 gap-2">
+            <!-- Options populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Payment Method Selector -->
+        <div>
+          <label class="block font-medium text-slate-300 mb-1">Select Payment Method</label>
+          <div class="grid grid-cols-2 gap-2" id="paymentContainer">
+            <label class="cursor-pointer border border-slate-800 rounded-xl p-2.5 bg-slate-900/60 hover:border-cyber-cyan flex items-center gap-2 transition-all payment-option">
+              <input type="radio" name="payment" value="QRIS Instant" checked class="accent-cyber-cyan">
+              <span class="text-xs text-slate-200"><i class="fa-solid fa-qrcode text-cyber-cyan mr-1"></i> QRIS Instant</span>
+            </label>
+            <label class="cursor-pointer border border-slate-800 rounded-xl p-2.5 bg-slate-900/60 hover:border-cyber-cyan flex items-center gap-2 transition-all payment-option">
+              <input type="radio" name="payment" value="DANA / OVO / GoPay" class="accent-cyber-cyan">
+              <span class="text-xs text-slate-200"><i class="fa-solid fa-wallet text-cyber-purple mr-1"></i> E-Wallet</span>
+            </label>
+            <label class="cursor-pointer border border-slate-800 rounded-xl p-2.5 bg-slate-900/60 hover:border-cyber-cyan flex items-center gap-2 transition-all payment-option">
+              <input type="radio" name="payment" value="Bank Transfer" class="accent-cyber-cyan">
+              <span class="text-xs text-slate-200"><i class="fa-solid fa-building-columns text-emerald-400 mr-1"></i> Bank </span>
+            </label>
+            <label class="cursor-pointer border border-slate-800 rounded-xl p-2.5 bg-slate-900/60 hover:border-cyber-cyan flex items-center gap-2 transition-all payment-option">
+              <input type="radio" name="payment" value="Crypto USDT" class="accent-cyber-cyan">
+              <span class="text-xs text-slate-200"><i class="fa-brands fa-bitcoin text-amber-400 mr-1"></i> USDT Crypto</span>
+            </label>
+          </div>
+        </div>
+
+<!-- Price Breakdown -->
+        <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800/80 space-y-1.5 text-xs">
+          <div class="flex justify-between text-slate-400">
+            <span>Package Subtotal</span>
+            <span id="subtotalPrice" class="text-slate-200">Rp 0</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>Admin & Handling Fee</span>
+            <span class="text-emerald-400">Rp 1,000</span>
+          </div>
+          <div class="flex justify-between text-slate-100 font-bold text-sm pt-2 border-t border-slate-800">
+            <span>Total Payable</span>
+            <span id="totalPrice" class="text-cyber-cyan">Rp 0</span>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="processOrderBtn" 
+                class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyber-cyan to-cyber-blue hover:from-cyber-blue hover:to-cyber-purple text-cyber-dark font-orbitron font-extrabold text-sm tracking-wider uppercase shadow-neon transition-all transform active:scale-95 flex items-center justify-center gap-2">
+          <i class="fa-brands fa-whatsapp text-lg"></i> Process Order Via WhatsApp
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    <!-- JAVASCRIPT LOGIC LENGKAP -->
+  <script>
+    /* 1. DATA PRODUK */
+    const PRODUCTS = [
+      {
+        id: "chatgpt-plus",
+        title: "ChatGPT Plus 1 Month",
+        category: "AI Tools",
+        rating: 4.9,
+        sold: 1420,
+        originalPrice: 350000,
+        discountPrice: 65000,
+        icon: '<i class="fa-solid fa-robot text-emerald-400 text-2xl"></i>',
+        bannerImg: "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=500&q=80",
+        variants: [
+          { name: "1 Month Shared", price: 65000 },
+          { name: "1 Month Private", price: 310000 }
+        ],
+        targetLabel: "Email / No. WhatsApp Customer"
+      },
+      {
+        id: "netflix-4k",
+        title: "Netflix Premium 4K UHD",
+        category: "Entertainment",
+        rating: 4.9,
+        sold: 3890,
+        originalPrice: 186000,
+        discountPrice: 35000,
+        icon: '<i class="fa-solid fa-film text-red-500 text-2xl"></i>',
+        bannerImg: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=500&q=80",
+        variants: [
+          { name: "1 Bulan (1 Profile)", price: 35000 },
+          { name: "3 Bulan (1 Profile)", price: 95000 },
+          { name: "1 Bulan (Full Private)", price: 175000 }
+        ],
+        targetLabel: "Nomor WhatsApp Customer"
+      },
+      {
+        id: "canva-pro",
+        title: "Canva Pro Lifetime Invite",
+        category: "Productivity",
+        rating: 4.8,
+        sold: 2100,
+        originalPrice: 150000,
+        discountPrice: 25000,
+        icon: '<i class="fa-solid fa-palette text-cyan-400 text-2xl"></i>',
+        bannerImg: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=500&q=80",
+        variants: [
+          { name: "Lifetime Member Invite", price: 25000 },
+          { name: "1 Tahun Brand Kit Admin", price: 75000 }
+        ],
+        targetLabel: "Email Akun Canva Anda"
+      },
+      {
+        id: "mlbb-diamonds",
+        title: "Mobile Legends 1000 Diamonds",
+        category: "Games & TopUp",
+        rating: 5.0,
+        sold: 8450,
+        originalPrice: 300000,
+        discountPrice: 235000,
+        icon: '<i class="fa-solid fa-gamepad text-amber-400 text-2xl"></i>',
+        bannerImg: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&q=80",
+        variants: [
+          { name: "250 Diamonds", price: 62000 },
+          { name: "500 Diamonds", price: 120000 },
+          { name: "1000 Diamonds", price: 235000 }
+        ],
+        targetLabel: "User ID & Zone ID (misal: 1234567 (1234))"
+      },
+      {
+        id: "spotify-family",
+        title: "Spotify Premium Plan",
+        category: "Entertainment",
+        rating: 4.9,
+        sold: 1950,
+        originalPrice: 85000,
+        discountPrice: 18000,
+        icon: '<i class="fa-brands fa-spotify text-emerald-500 text-2xl"></i>',
+        bannerImg: "https://images.unsplash.com/photo-1614680376593-902f749f7cfc?w=500&q=80",
+        variants: [
+          { name: "1 Bulan Plan", price: 18000 },
+          { name: "3 Bulan Plan", price: 48000 }
+        ],
+        targetLabel: "Nomor WhatsApp Customer"
+      }
+    ];
+
+    /* 2. DATA REKENING / METODE PEMBAYARAN (UBAH DATA DI SINI) */
+    const PAYMENT_ACCOUNTS = {
+      qris: {
+        title: "QRIS All Payment (GoPay, DANA, OVO, ShopeePay, Mobile Banking)",
+        // Ganti URL gambar di bawah dengan gambar QRIS milik Anda sendiri
+        qrImageUrl: "https://cdn.phototourl.com/free/2026-08-05-1c8cf2a6-8555-4e55-94a6-24f603ca3a38.png"
+      },
+      bank: [
+        { bankName: "BANK SINARMAS", accountNumber: "0060144494", accountName: "APRIZAL" },
+        { bankName: "BANK MANDIRI", accountNumber: "1234567890", accountName: "NAMA PEMILIK MANDIRI" }
+      ],
+      ewallet: [
+        { name: "DANA", number: "081266387091", accountName: "APRIZAL" },
+        { name: "GOPAY", number: "089630810455", accountName: "APRIZAL" }
+      ],
+      crypto: {
+        network: "USDT (TRC20)",
+        address: "T9xZX3K9pLmN2vB4rC6sD8eF1gH3jK5mL"
+      }
+    };
+
+    const CATEGORIES = ["All", "Entertainment", "AI Tools", "Games & TopUp", "Productivity"];
+    let currentCategory = "All";
+    let searchQuery = "";
+    let selectedProduct = null;
+    let selectedVariant = null;
+    let currentOrderDetails = {};
+
+    /* 3. THREE.JS BACKGROUND */
+    let scene, camera, renderer, particles;
+    let mouseX = 0, mouseY = 0;
+
+    function initThreeJS() {
+      const container = document.getElementById('threejs-container');
+      if (!container) return;
+      
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 2000);
+      camera.position.z = 1000;
+
+      const geometry = new THREE.BufferGeometry();
+      const particleCount = window.innerWidth < 768 ? 600 : 1200;
+      const positions = new Float32Array(particleCount * 3);
+      const colors = new Float32Array(particleCount * 3);
+
+      const colorCyan = new THREE.Color('#00f2fe');
+      const colorPurple = new THREE.Color('#9d4edd');
+
+      for (let i = 0; i < particleCount * 3; i += 3) {
+        positions[i] = (Math.random() - 0.5) * 2000;
+        positions[i + 1] = (Math.random() - 0.5) * 2000;
+        positions[i + 2] = (Math.random() - 0.5) * 2000;
+
+        const mixedColor = Math.random() > 0.5 ? colorCyan : colorPurple;
+        colors[i] = mixedColor.r;
+        colors[i + 1] = mixedColor.g;
+        colors[i + 2] = mixedColor.b;
+      }
+
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      const material = new THREE.PointsMaterial({
+        size: 3.5,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.65,
+        blending: THREE.AdditiveBlending
+      });
+
+      particles = new THREE.Points(geometry, material);
+      scene.add(particles);
+
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX - window.innerWidth / 2) * 0.1;
+        mouseY = (e.clientY - window.innerHeight / 2) * 0.1;
+      });
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      animateThreeJS();
+    }
+
+    function animateThreeJS() {
+      requestAnimationFrame(animateThreeJS);
+      if (particles) {
+        particles.rotation.x += 0.0005;
+        particles.rotation.y += 0.0008;
+      }
+      camera.position.x += (mouseX - camera.position.x) * 0.05;
+      camera.position.y += (-mouseY - camera.position.y) * 0.05;
+      camera.lookAt(scene.position);
+      renderer.render(scene, camera);
+    }
+
+    /* 4. DUAL BACKGROUND SWITCHER */
+    let isVideoBg = false;
+    const bgToggleBtn = document.getElementById('bgToggleBtn');
+    if (bgToggleBtn) {
+      bgToggleBtn.addEventListener('click', () => {
+        isVideoBg = !isVideoBg;
+        const threeContainer = document.getElementById('threejs-container');
+        const videoContainer = document.getElementById('video-container');
+        const bgVideo = document.getElementById('bg-video');
+
+        if (isVideoBg) {
+          threeContainer.classList.replace('opacity-100', 'opacity-0');
+          videoContainer.classList.replace('opacity-0', 'opacity-100');
+          bgVideo.play().catch(() => {});
+          document.getElementById('bgToggleText').textContent = "Live Video";
+          document.getElementById('bgToggleIcon').className = "fa-solid fa-video text-sm";
+        } else {
+          videoContainer.classList.replace('opacity-100', 'opacity-0');
+          threeContainer.classList.replace('opacity-0', 'opacity-100');
+          bgVideo.pause();
+          document.getElementById('bgToggleText').textContent = "3D Canvas";
+          document.getElementById('bgToggleIcon').className = "fa-solid fa-cubes text-sm";
+        }
+      });
+    }
+
+    /* 5. RENDER UI */
+    function renderCategories() {
+      const container = document.getElementById('categoryContainer');
+      if (!container) return;
+      container.innerHTML = CATEGORIES.map(cat => `
+        <button onclick="selectCategory('${cat}')" 
+                class="px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-300 border ${
+                  currentCategory === cat 
+                    ? 'bg-gradient-to-r from-cyber-cyan to-cyber-blue text-cyber-dark border-cyber-cyan shadow-neon' 
+                    : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:border-slate-700'
+                }">
+          ${cat}
+        </button>
+      `).join('');
+    }
+
+    function selectCategory(cat) {
+      currentCategory = cat;
+      renderCategories();
+      renderProducts();
+    }
+
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount);
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById('productGrid');
+      const emptyState = document.getElementById('emptyState');
+
+      const filtered = PRODUCTS.filter(p => {
+        const matchesCat = currentCategory === "All" || p.category === currentCategory;
+        const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                              p.category.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesCat && matchesSearch;
+      });
+
+      const countBadge = document.getElementById('productCountBadge');
+      if (countBadge) countBadge.textContent = `Menampilkan ${filtered.length} Produk`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = "";
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      grid.innerHTML = filtered.map(p => `
+        <div class="product-card glass-card rounded-2xl p-5 border border-slate-800 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-start mb-3">
+              <div class="w-12 h-12 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center">
+                ${p.icon}
+              </div>
+              <span class="text-[10px] font-bold text-cyber-cyan bg-cyber-cyan/10 px-2.5 py-1 rounded-full border border-cyber-cyan/30">
+                Ready Stock
+              </span>
+            </div>
+
+            <h3 class="font-bold text-slate-100 text-base mb-1 line-clamp-1">${p.title}</h3>
+            
+            <div class="flex items-center gap-2 text-xs text-slate-400 mb-4">
+              <span class="text-amber-400 flex items-center gap-1 font-semibold">★ ${p.rating}</span>
+              <span>•</span>
+              <span>Terjual ${p.sold.toLocaleString()}+</span>
+            </div>
+          </div>
+
+          <div class="space-y-3 pt-3 border-t border-slate-800/80">
+            <div>
+              <span class="text-xs text-slate-500 line-through block">${formatCurrency(p.originalPrice)}</span>
+              <span class="text-lg font-orbitron font-extrabold text-cyber-cyan">${formatCurrency(p.discountPrice)}</span>
+            </div>
+
+            <button onclick="openCheckoutModal('${p.id}')" 
+                    class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-gradient-to-r hover:from-cyber-cyan hover:to-cyber-blue hover:text-cyber-dark text-slate-200 border border-slate-700 hover:border-cyber-cyan text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2">
+              <i class="fa-solid fa-cart-shopping"></i> Beli Sekarang
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* 6. PROMO SLIDER */
+    let currentSlide = 0;
+    function initSlider() {
+      const featured = PRODUCTS.slice(0, 3);
+      const container = document.getElementById('promoSlider');
+      const dots = document.getElementById('sliderDots');
+      if (!container || !dots) return;
+
+      container.innerHTML = `
+        <div class="space-y-3">
+          <div class="h-32 sm:h-40 rounded-xl overflow-hidden relative">
+            <img id="slideImg" src="${featured[0].bannerImg}" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-cyber-dark via-transparent to-transparent"></div>
+          </div>
+          <div>
+            <span id="slideBadge" class="text-[10px] text-cyber-cyan uppercase tracking-wider font-extrabold">${featured[0].category}</span>
+            <h3 id="slideTitle" class="font-orbitron font-bold text-lg text-slate-100">${featured[0].title}</h3>
+            <p id="slidePrice" class="text-sm font-bold text-cyber-purple">${formatCurrency(featured[0].discountPrice)}</p>
+          </div>
+        </div>
+      `;
+
+      dots.innerHTML = featured.map((_, i) => `
+        <span class="w-2 h-2 rounded-full transition-all ${i === 0 ? 'bg-cyber-cyan w-4' : 'bg-slate-700'}"></span>
+      `).join('');
+
+      document.getElementById('nextSlide').onclick = () => updateSlide((currentSlide + 1) % featured.length);
+      document.getElementById('prevSlide').onclick = () => updateSlide((currentSlide - 1 + featured.length) % featured.length);
+
+      setInterval(() => {
+        currentSlide = (currentSlide + 1) % featured.length;
+        updateSlide(currentSlide);
+      }, 5000);
+    }
+
+    function updateSlide(index) {
+      currentSlide = index;
+      const featured = PRODUCTS.slice(0, 3);
+      const item = featured[index];
+
+      const img = document.getElementById('slideImg');
+      if (img) {
+        img.src = item.bannerImg;
+        document.getElementById('slideBadge').textContent = item.category;
+        document.getElementById('slideTitle').textContent = item.title;
+        document.getElementById('slidePrice').textContent = formatCurrency(item.discountPrice);
+
+        const dots = document.getElementById('sliderDots').children;
+        Array.from(dots).forEach((dot, i) => {
+          dot.className = `w-2 h-2 rounded-full transition-all ${i === index ? 'bg-cyber-cyan w-4' : 'bg-slate-700'}`;
+        });
+      }
+    }
+
+    /* 7. MODAL CHECKOUT & DYNAMIC PAYMENT LOGIC */
+    const modal = document.getElementById('checkoutModal');
+    const stepForm = document.getElementById('stepForm');
+    const stepPayment = document.getElementById('stepPayment');
+
+    function openCheckoutModal(productId) {
+      selectedProduct = PRODUCTS.find(p => p.id === productId);
+      if(!selectedProduct) return;
+
+      selectedVariant = selectedProduct.variants[0];
+
+      // Reset Modal ke Step 1
+      stepForm.classList.remove('hidden');
+      stepPayment.classList.add('hidden');
+
+      document.getElementById('modalProductTitle').textContent = selectedProduct.title;
+      document.getElementById('modalProductCategory').textContent = selectedProduct.category;
+      document.getElementById('modalProductIcon').innerHTML = selectedProduct.icon;
+      document.getElementById('targetIdLabel').textContent = selectedProduct.targetLabel;
+
+      // Render Variasi
+      const variantContainer = document.getElementById('variantContainer');
+      variantContainer.innerHTML = selectedProduct.variants.map((v, i) => `
+        <button type="button" onclick="selectVariant(${i})" 
+                class="variant-btn border rounded-xl p-2 text-left transition-all ${
+                  i === 0 ? 'border-cyber-cyan bg-cyber-cyan/10 text-slate-100' : 'border-slate-800 bg-slate-900/60 text-slate-400'
+                }">
+          <span class="block text-xs font-semibold">${v.name}</span>
+          <span class="block text-[11px] font-bold text-cyber-cyan">${formatCurrency(v.price)}</span>
+        </button>
+      `).join('');
+
+      updatePrices();
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function selectVariant(index) {
+      selectedVariant = selectedProduct.variants[index];
+      const buttons = document.querySelectorAll('.variant-btn');
+      buttons.forEach((btn, i) => {
+        if(i === index) {
+          btn.className = "variant-btn border rounded-xl p-2 text-left transition-all border-cyber-cyan bg-cyber-cyan/10 text-slate-100";
+        } else {
+          btn.className = "variant-btn border rounded-xl p-2 text-left transition-all border-slate-800 bg-slate-900/60 text-slate-400";
+        }
+      });
+      updatePrices();
+    }
+
+    function updatePrices() {
+      const subtotal = selectedVariant ? selectedVariant.price : 0;
+      const adminFee = 1000;
+      const total = subtotal + adminFee;
+
+      document.getElementById('subtotalPrice').textContent = formatCurrency(subtotal);
+      document.getElementById('totalPrice').textContent = formatCurrency(total);
+    }
+
+    document.getElementById('closeModal').addEventListener('click', () => {
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    });
+
+    // PEMBERSIHAN FORM & PROSES MASUK KE STEP PAYMENT
+    document.getElementById('checkoutForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const targetId = document.getElementById('targetIdInput').value;
+      const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+      const totalAmount = document.getElementById('totalPrice').textContent;
+
+      currentOrderDetails = {
+        product: selectedProduct.title,
+        variant: selectedVariant.name,
+        targetId: targetId,
+        paymentMethod: paymentMethod,
+        total: totalAmount
+      };
+
+      // Efek Confetti
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
+      }
+
+      // Sembunyikan Step 1, Tampilkan Step 2 (Pembayaran)
+      stepForm.classList.add('hidden');
+      stepPayment.classList.remove('hidden');
+
+      document.getElementById('payTotalAmount').textContent = totalAmount;
+
+      // GENERATE TAMPILAN PEMBAYARAN DINAMIS BEBERAPA METODE
+      renderPaymentDetails(paymentMethod);
+    });
+
+    function renderPaymentDetails(method) {
+      const container = document.getElementById('paymentDynamicContent');
+      container.innerHTML = "";
+
+      if (method === "QRIS") {
+        container.innerHTML = `
+          <div class="text-center space-y-3">
+            <div class="p-3 bg-white rounded-xl inline-block shadow-neon">
+              <img src="${PAYMENT_ACCOUNTS.qris.qrImageUrl}" alt="QRIS Code" class="w-44 h-44 mx-auto" />
+            </div>
+            <p class="text-[11px] text-slate-300">${PAYMENT_ACCOUNTS.qris.title}</p>
+            <a href="${PAYMENT_ACCOUNTS.qris.qrImageUrl}" download="QRIS_VEXLABS.png" target="_blank" 
+               class="inline-block text-[11px] bg-slate-800 text-cyber-cyan px-3 py-1.5 rounded-lg border border-slate-700 hover:bg-slate-700">
+              <i class="fa-solid fa-download"></i> Download QRIS
+            </a>
+          </div>
+        `;
+      } 
+      else if (method === "Bank Transfer") {
+        container.innerHTML = PAYMENT_ACCOUNTS.bank.map(b => `
+          <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 space-y-1 mb-2">
+            <span class="text-[10px] font-bold text-cyber-cyan">${b.bankName}</span>
+            <div class="flex justify-between items-center">
+              <span class="font-mono font-bold text-sm text-slate-100">${b.accountNumber}</span>
+              <button onclick="copyToClipboard('${b.accountNumber}')" class="text-xs bg-slate-700 hover:bg-cyber-cyan hover:text-cyber-dark text-slate-200 px-2.5 py-1 rounded-md transition-all">
+                <i class="fa-solid fa-copy"></i> Salin
+              </button>
+            </div>
+            <p class="text-[10px] text-slate-400">A/N: ${b.accountName}</p>
+          </div>
+        `).join('');
+      } 
+      else if (method === "E-Wallet") {
+        container.innerHTML = PAYMENT_ACCOUNTS.ewallet.map(w => `
+          <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 space-y-1 mb-2">
+            <span class="text-[10px] font-bold text-cyber-purple">${w.name}</span>
+            <div class="flex justify-between items-center">
+              <span class="font-mono font-bold text-sm text-slate-100">${w.number}</span>
+              <button onclick="copyToClipboard('${w.number}')" class="text-xs bg-slate-700 hover:bg-cyber-purple hover:text-white text-slate-200 px-2.5 py-1 rounded-md transition-all">
+                <i class="fa-solid fa-copy"></i> Salin
+              </button>
+            </div>
+            <p class="text-[10px] text-slate-400">A/N: ${w.accountName}</p>
+          </div>
+        `).join('');
+      } 
+      else if (method === "Crypto USDT") {
+        container.innerHTML = `
+          <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 space-y-1">
+            <span class="text-[10px] font-bold text-amber-400">Network: ${PAYMENT_ACCOUNTS.crypto.network}</span>
+            <div class="flex justify-between items-center gap-2">
+              <span class="font-mono text-[11px] text-slate-100 truncate">${PAYMENT_ACCOUNTS.crypto.address}</span>
+              <button onclick="copyToClipboard('${PAYMENT_ACCOUNTS.crypto.address}')" class="text-xs bg-slate-700 hover:bg-amber-400 hover:text-cyber-dark text-slate-200 px-2.5 py-1 rounded-md transition-all shrink-0">
+                <i class="fa-solid fa-copy"></i> Salin
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text);
+      alert("Berhasil disalin: " + text);
+    }
+
+    // Kembalikan ke step form
+    document.getElementById('backToFormBtn').addEventListener('click', () => {
+      stepPayment.classList.add('hidden');
+      stepForm.classList.remove('hidden');
+    });
+
+    // Konfirmasi via WhatsApp
+    document.getElementById('confirmWaBtn').addEventListener('click', () => {
+      const adminWA = "6281234567890"; // GANTI DENGAN NOMOR WA ADMIN ANDA
+      const msg = `*KONFIRMASI PEMBAYARAN - VEXLABS*%0A` +
+                  `----------------------------------%0A` +
+                  `*Produk:* ${currentOrderDetails.product}%0A` +
+                  `*Paket:* ${currentOrderDetails.variant}%0A` +
+                  `*Target ID/WA:* ${currentOrderDetails.targetId}%0A` +
+                  `*Metode Bayar:* ${currentOrderDetails.paymentMethod}%0A` +
+                  `*Total Bayar:* ${currentOrderDetails.total}%0A` +
+                  `----------------------------------%0A` +
+                  `Saya sudah mentransfer sesuai nominal di atas. Mohon diproses, terima kasih!`;
+
+      window.open(`https://wa.me/${adminWA}?text=${msg}`, '_blank');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    });
+
+    /* 8. SEARCH LOGIC */
+    const searchInput = document.getElementById('searchInput');
+    const mobileSearchInput = document.getElementById('mobileSearchInput');
+
+    [searchInput, mobileSearchInput].forEach(input => {
+      if (input) {
+        input.addEventListener('input', (e) => {
+          searchQuery = e.target.value;
+          renderProducts();
+        });
+      }
+    });
+
+    /* INITIALIZATION */
+    window.addEventListener('DOMContentLoaded', () => {
+      initThreeJS();
+      renderCategories();
+      renderProducts();
+      initSlider();
+    });
+  </script>
+  </script>
+</body>
+</html>
